@@ -71,3 +71,12 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage) {
   })
 }
 
+const server = http.createServer(app);
+const port = process.env.PORT || 3000;
+server.listen(port);
+server.on("listening", ()=>{
+  console.log(`listening on ${port}`);
+});
+server.on("error", (err)=>{
+  console.error(err);
+});
