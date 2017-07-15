@@ -5,6 +5,10 @@ var bodyParser = require('body-parser')
 var app = express()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+app.get('/', function(req, res) {
+  res.send('hello world');
+});
+
 app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) => {
   res.status(200).end()
   var reqBody = req.body
@@ -71,12 +75,11 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage) {
   })
 }
 
-const server = http.createServer(app);
 const port = process.env.PORT || 3000;
-server.listen(port);
-server.on("listening", ()=>{
+app.listen(port);
+app.on("listening", ()=>{
   console.log(`listening on ${port}`);
 });
-server.on("error", (err)=>{
+app.on("error", (err)=>{
   console.error(err);
 });
