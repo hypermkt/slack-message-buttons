@@ -54,6 +54,7 @@ app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) =
 })
 
 app.post('/slack/actions', urlencodedParser, (req, res) => {
+  console.log("called /slack/actions")
   res.status(200).end()
   var actionJSONPayload = JSON.parse(req.body.payload)
   var message = {
