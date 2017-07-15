@@ -35,13 +35,13 @@ app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) =
             {
               "name": "yes",
               "text": "yes",
-              "type": "buton",
+              "type": "button",
               "value": "yes"
             },
             {
               "name": "no",
               "text": "no",
-              "type": "buton",
+              "type": "button",
               "value": "no"
             }
           ]
