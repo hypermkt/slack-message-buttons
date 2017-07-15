@@ -48,6 +48,69 @@ app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) =
   }
 })
 
+app.post('/slack/slash-commands/send-me-menus', urlencodedParser, (req, res) => {
+  res.status(200).end()
+  var reqBody = req.body
+  var responseURL = reqBody.response_url
+
+  if (reqBody.token != process.env.VERIFICATION_TOKEN) {
+    res.status(403).end("Access Forbidden")
+  } else {
+    var message = {
+      "text": "Would you like to play a game?",
+      "response_type": "in_channel",
+      "attachments": [
+        {
+          "text": "Choose a game to play",
+          "fallback": "If you could read this message, you'd be choosing something fun to do right now.",
+          "color": "#3AA3E3",
+          "attachment_type": "default",
+          "callback_id": "game_selection",
+          "actions": [
+            {
+              "name": "games_list",
+              "text": "Pick a game...",
+              "type": "select",
+              "options": [
+                {
+                  "text": "Hearts",
+                  "value": "hearts"
+                },
+                {
+                  "text": "Bridge",
+                  "value": "bridge"
+                },
+                {
+                  "text": "Checkers",
+                  "value": "checkers"
+                },
+                {
+                  "text": "Chess",
+                  "value": "chess"
+                },
+                {
+                  "text": "Poker",
+                  "value": "poker"
+                },
+                {
+                  "text": "Falken's Maze",
+                  "value": "maze"
+                },
+                {
+                  "text": "Global Thermonuclear War",
+                  "value": "war"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    } 
+
+    sendMessageToSlackResponseURL(responseURL, message)
+  }
+})
+
 app.post('/slack/actions', urlencodedParser, (req, res) => {
   res.status(200).end()
   var actionJSONPayload = JSON.parse(req.body.payload)
