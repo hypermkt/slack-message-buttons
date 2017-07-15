@@ -10,13 +10,18 @@ app.get('/', function(req, res) {
 });
 
 app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) => {
+  console.log("called /slack/slash-commands/send-me-buttons")
   res.status(200).end()
   var reqBody = req.body
   var responseURL = reqBody.response_url
 
   if (reqBody.token != process.env.VERIFICATION_TOKEN) {
+  console.log("failed token check")
+  console.log("reqBody.token: " + reqBody.token)
+  console.log("VERIFICATION_TOKEN: " + process.env.VERIFICATION_TOKEN)
     res.status(403).end("Access Forbidden")
   } else {
+  console.log("successed token check")
     var message = {
       "text": "This is your first interactive message",
       "attachments": [
