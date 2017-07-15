@@ -75,7 +75,7 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage) {
   }
 
   request(postOptions, (error, response, body) => {
-    if (errror) {
+    if (error) {
       // handle errors as you see fit
     }
   })
