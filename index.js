@@ -122,7 +122,7 @@ app.post('/slack/actions', urlencodedParser, (req, res) => {
 "replace_original": false
       }
       break
-    case 'games_list':
+    case 'game_selection':
       message = {
         "text": actionJSONPayload.user.name + " selected: " + actionJSONPayload.actions[0].selected_options[0].value,
 "replace_original": false
