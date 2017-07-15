@@ -114,10 +114,22 @@ app.post('/slack/slash-commands/send-me-menus', urlencodedParser, (req, res) => 
 app.post('/slack/actions', urlencodedParser, (req, res) => {
   res.status(200).end()
   var actionJSONPayload = JSON.parse(req.body.payload)
-  var message = {
-    "text": actionJSONPayload.user.name + " clicked: " + actionJSONPayload.actions[0].name,
-    "replace_original": false
+  var message = null
+  switch (actionJSONPayload.callback_id) {
+    case 'button_tutorial':
+      message = {
+        "text": actionJSONPayload.user.name + " clicked: " + actionJSONPayload.actions[0].name,
+"replace_original": false
+      }
+      break
+    case 'games_list':
+      message = {
+        "text": actionJSONPayload.user.name + " selected: " + actionJSONPayload.actions[0].selected_options[0].value,
+"replace_original": false
+      }
+      break
   }
+
   sendMessageToSlackResponseURL(actionJSONPayload.response_url, message)
 })
 
