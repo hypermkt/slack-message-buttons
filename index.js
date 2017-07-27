@@ -21,23 +21,17 @@ app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) =
       "text": "This is your first interactive message",
       "attachments": [
         {
-          "text": "Building buttons is easy right?",
+          "text": "◯◯のタスク終わりましたか？",
           "fallback": "Shame..buttons areN7t supported in this land",
           "callback_id": "button_tutorial",
           "color": "#3AA3E3",
           "attachment_type": "default",
           "actions": [
             {
-              "name": "yes",
-              "text": "yes",
+              "name": "done",
+              "text": "完了",
               "type": "button",
-              "value": "yes"
-            },
-            {
-              "name": "no",
-              "text": "no",
-              "type": "button",
-              "value": "no"
+              "value": "done"
             }
           ]
         }
