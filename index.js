@@ -19,6 +19,7 @@ app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) =
   } else {
     var message = {
       "text": "This is your first interactive message",
+      "response_type": "in_channel",
       "attachments": [
         {
           "text": "◯◯のタスク終わりましたか？",
@@ -129,20 +130,29 @@ app.post('/slack/actions', urlencodedParser, (req, res) => {
 })
 
 function chatUpdate(payload) {
+  console.log('called chatUpdate')
+
+  console.log(JSON.stringify(payload));
   let postOptions = {
       uri: 'https://slack.com/api/chat.update',
       method: 'POST',
       form: {
-        token: payload.token,
+        token: process.env.AUTHENTICATION_TOKEN,
         channel: payload.channel.id,
         text: 'Hello World',
-        ts: payload.message_ts,
+        ts: payload.original_message.ts,
+        as_user: true
       }
   }
+  console.log("token: " + postOptions.form.token)
+  console.log("channel: " + postOptions.form.channel)
+  console.log("ts: " + postOptions.form.ts)
 
   request(postOptions, (error, response, body) => {
+    console.log('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    console.log('body:', body);
       if (error) {
-          // handle errors as you see fit
       }
   })
 }
