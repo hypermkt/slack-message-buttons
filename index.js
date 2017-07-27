@@ -23,7 +23,7 @@ app.post('/slack/slash-commands/send-me-buttons', urlencodedParser, (req, res) =
         {
           "text": "◯◯のタスク終わりましたか？",
           "fallback": "Shame..buttons areN7t supported in this land",
-          "callback_id": "button_tutorial",
+          "callback_id": "task_check",
           "color": "#3AA3E3",
           "attachment_type": "default",
           "actions": [
@@ -110,22 +110,42 @@ app.post('/slack/actions', urlencodedParser, (req, res) => {
   var actionJSONPayload = JSON.parse(req.body.payload)
   var message = null
   switch (actionJSONPayload.callback_id) {
-    case 'button_tutorial':
-      message = {
-        "text": actionJSONPayload.user.name + " clicked: " + actionJSONPayload.actions[0].name,
-"replace_original": false
-      }
+    case 'task_check':
+//       message = {
+//         "text": actionJSONPayload.user.name + " clicked: " + actionJSONPayload.actions[0].name,
+// "replace_original": false
+//       }
+        chatUpdate(actionJSONPayload);
       break
     case 'game_selection':
       message = {
         "text": actionJSONPayload.user.name + " selected: " + actionJSONPayload.actions[0].selected_options[0].value,
 "replace_original": false
       }
+      sendMessageToSlackResponseURL(actionJSONPayload.response_url, message)
       break
   }
 
-  sendMessageToSlackResponseURL(actionJSONPayload.response_url, message)
 })
+
+function chatUpdate(payload) {
+  let postOptions = {
+      uri: 'https://slack.com/api/chat.update',
+      method: 'POST',
+      form: {
+        token: payload.token,
+        channel: payload.channel.id,
+        text: 'Hello World',
+        ts: payload.message_ts,
+      }
+  }
+
+  request(postOptions, (error, response, body) => {
+      if (error) {
+          // handle errors as you see fit
+      }
+  })
+}
 
 function sendMessageToSlackResponseURL(responseURL, JSONMessage) {
   var postOptions = {
